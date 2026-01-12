@@ -1,0 +1,30 @@
+﻿@model fitapp_plodik_MVC.Entities.Machine
+
+@{
+    ViewData["Title"] = "Detail stroje";
+}
+
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-outline-secondary">← Zpět</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h4 class="m-0">@Model.Name</h4>
+    </div>
+
+    <div class="card-body">
+        <p><strong>Značka:</strong> @(Model.Brand ?? "-")</p>
+        <p><strong>Partie:</strong> <span class="badge bg-primary">@Model.MuscleGroup</span></p>
+        <p><strong>Popis:</strong> @(Model.Description ?? "-")</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" class="img-fluid rounded mt-2" style="max-width: 400px;" />
+        }
+    </div>
+
+    <div class="card-footer text-end">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+    </div>
+</div>

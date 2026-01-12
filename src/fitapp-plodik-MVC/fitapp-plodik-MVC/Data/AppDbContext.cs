@@ -22,4 +22,3 @@ namespace fitapp_plodik_MVC.Data
         }
     }
 }
-c
