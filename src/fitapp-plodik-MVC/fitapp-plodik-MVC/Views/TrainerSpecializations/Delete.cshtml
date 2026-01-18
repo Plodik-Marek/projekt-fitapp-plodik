@@ -1,0 +1,13 @@
+﻿@model fitapp_plodik_MVC.Entities.TrainerSpecialization
+
+<h2>Smazat specializaci</h2>
+
+<p>Opravdu chceš smazat specializaci: <b>@Model.Exercise?.Name</b>?</p>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">Smazat</button>
+    <a asp-controller="Trainers" asp-action="Details" asp-route-id="@Model.TrainerId" class="btn btn-secondary">Zpět</a>
+</form>

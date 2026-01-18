@@ -1,0 +1,36 @@
+﻿@model fitapp_plodik_MVC.Entities.Trainer
+
+<h2>Upravit trenéra</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Jméno</label>
+        <input asp-for="FullName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Bio</label>
+        <textarea asp-for="Bio" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Telefon</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Obrázek URL</label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">Uložit</button>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</form>

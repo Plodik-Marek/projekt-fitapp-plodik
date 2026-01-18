@@ -1,0 +1,11 @@
+﻿@model fitapp_plodik_MVC.Entities.Workout
+
+<h2>Smazat trénink</h2>
+
+<p>Opravdu chceš smazat trénink z <b>@Model.WorkoutDate.ToString("dd.MM.yyyy")</b>?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Smazat</button>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</form>

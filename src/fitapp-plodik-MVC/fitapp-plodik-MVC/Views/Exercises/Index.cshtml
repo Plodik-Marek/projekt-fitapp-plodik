@@ -1,0 +1,33 @@
+﻿@model List<fitapp_plodik_MVC.Entities.Exercise>
+
+<h2>Cviky</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">+ Přidat cvik</a>
+</p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Partie</th>
+            <th>Stroj</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@(item.MuscleGroup ?? "-")</td>
+                <td>@(item.Machine?.Name ?? "Bez stroje")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detail</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Upravit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

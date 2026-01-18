@@ -1,0 +1,18 @@
+﻿@model fitapp_plodik_MVC.Entities.Exercise
+
+<h2>Detail cviku</h2>
+
+<p><b>Název:</b> @Model.Name</p>
+<p><b>Partie:</b> @(Model.MuscleGroup ?? "-")</p>
+<p><b>Stroj:</b> @(Model.Machine?.Name ?? "Bez stroje")</p>
+<p><b>Popis:</b> @(Model.Description ?? "-")</p>
+
+@if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+{
+    <img src="@Model.ImageUrl" style="max-width:300px;" />
+}
+
+<p class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</p>

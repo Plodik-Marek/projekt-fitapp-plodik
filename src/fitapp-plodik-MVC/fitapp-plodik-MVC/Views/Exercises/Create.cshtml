@@ -1,0 +1,35 @@
+﻿@model fitapp_plodik_MVC.Entities.Exercise
+
+<h2>Přidat cvik</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Název</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Partie</label>
+        <input asp-for="MuscleGroup" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Popis</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Obrázek URL</label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Stroj</label>
+        <select asp-for="MachineId" class="form-control" asp-items="ViewBag.MachineId">
+            <option value="">-- bez stroje --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Uložit</button>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</form>

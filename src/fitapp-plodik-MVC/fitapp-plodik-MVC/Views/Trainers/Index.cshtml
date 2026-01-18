@@ -1,0 +1,42 @@
+﻿@model List<fitapp_plodik_MVC.Entities.Trainer>
+
+<h2>Trenéři</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">+ Přidat trenéra</a>
+</p>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Zatím nejsou žádní trenéři.
+    </div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Jméno</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.FullName</td>
+                    <td>@(t.Email ?? "-")</td>
+                    <td>@(t.Phone ?? "-")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@t.Id">Detail</a> |
+                        <a asp-action="Edit" asp-route-id="@t.Id">Upravit</a> |
+                        <a asp-action="Delete" asp-route-id="@t.Id">Smazat</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

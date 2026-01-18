@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using fitapp_plodik_MVC.Entities;
 
 namespace fitapp_plodik_MVC.Entities
 

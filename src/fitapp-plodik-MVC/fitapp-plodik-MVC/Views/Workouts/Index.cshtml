@@ -1,0 +1,31 @@
+﻿@model List<fitapp_plodik_MVC.Entities.Workout>
+
+<h2>Tréninky</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">+ Přidat trénink</a>
+</p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Poznámka</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var w in Model)
+        {
+            <tr>
+                <td>@w.WorkoutDate.ToString("dd.MM.yyyy")</td>
+                <td>@(w.Note ?? "-")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@w.Id">Detail</a> |
+                    <a asp-action="Edit" asp-route-id="@w.Id">Upravit</a> |
+                    <a asp-action="Delete" asp-route-id="@w.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

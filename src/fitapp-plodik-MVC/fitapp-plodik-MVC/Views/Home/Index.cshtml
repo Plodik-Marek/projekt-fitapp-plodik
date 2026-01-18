@@ -1,8 +1,168 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "FitApp Menu";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .fit-menu-page {
+        min-height: calc(100vh - 160px);
+        padding-bottom: 30px;
+        background-image: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.90)), url('/img/icons/pozadi.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .fit-title {
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-family: 'Bebas Neue', sans-serif;
+    }
+
+    .fit-subtitle {
+        color: rgba(255,255,255,0.70);
+        font-size: 1.05rem;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-card {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 22px;
+        transition: 0.2s ease;
+        overflow: hidden;
+        min-height: 190px;
+        backdrop-filter: blur(8px);
+    }
+
+        .fit-card:hover {
+            transform: translateY(-6px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 0 35px rgba(34, 211, 238, 0.12);
+        }
+
+    .fit-card-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        min-height: 110px;
+        filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.25));
+    }
+
+        .fit-card-icon img {
+            height: 95px;
+            width: 95px;
+            object-fit: contain;
+        }
+
+    .fit-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: #fff;
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+    }
+
+    .fit-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .fit-badge {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(34, 211, 238, 0.10);
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        color: rgba(34, 211, 238, 0.95);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-family: 'Montserrat', sans-serif;
+    }
+</style>
+
+<div class="fit-menu-page rounded-4 p-4">
+
+    <div class="text-center mt-3 mb-4">
+        <div class="fit-badge mb-3">Best Fitness App</div>
+
+        <h1 class="display-5 fit-title m-0">FITAPP</h1>
+        <p class="fit-subtitle mt-2 mb-0">Vyber sekci aplikace</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" asp-controller="Workouts" asp-action="Index">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/workoutcallendar.png" alt="Tréninky" />
+                    </div>
+                    <div class="fit-card-title">Tréninky</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" asp-controller="Exercises" asp-action="Index">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/trenink.png" alt="Cviky" />
+                    </div>
+                    <div class="fit-card-title">Cviky</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" asp-controller="Machines" asp-action="Index">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/stroj.png" alt="Stroje" />
+                    </div>
+                    <div class="fit-card-title">Stroje</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" asp-controller="Trainers" asp-action="Index">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/trener.png" alt="Trenéři" />
+                    </div>
+                    <div class="fit-card-title">Trenéři</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" asp-controller="Home" asp-action="Privacy">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/info.png" alt="Info" />
+                    </div>
+                    <div class="fit-card-title">Info</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a class="fit-link" href="javascript:window.close();">
+                <div class="fit-card p-4 text-center h-100">
+                    <div class="fit-card-icon">
+                        <img src="~/img/icons/exit.png" alt="Exit" />
+                    </div>
+                    <div class="fit-card-title">Exit</div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
 </div>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace fitapp_plodik_MVC.Entities
 {
@@ -15,12 +16,14 @@ namespace fitapp_plodik_MVC.Entities
         [Column("workout_id")]
         public int WorkoutId { get; set; }
 
+        [ValidateNever]
         public Workout Workout { get; set; } = null!;
 
         [Required]
         [Column("exercise_id")]
         public int ExerciseId { get; set; }
 
+        [ValidateNever]
         public Exercise Exercise { get; set; } = null!;
 
         [Required]

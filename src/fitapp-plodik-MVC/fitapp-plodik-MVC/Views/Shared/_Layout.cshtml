@@ -1,54 +1,167 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - fitapp_plodik_MVC</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - FITAPP</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/fitapp_plodik_MVC.styles.css" asp-append-version="true" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: #000;
+            color: #f1f1f1;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .navbar.bg-black {
+            background-color: #000 !important;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.75) !important;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+            .nav-link:hover {
+                color: #22d3ee !important;
+            }
+
+        .navbar-brand {
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .fit-brand-logo {
+            height: 34px;
+            width: 34px;
+            object-fit: cover;
+            filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.20));
+        }
+
+        .fit-user {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 8px 14px;
+           
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.08);
+        }
+
+            .fit-user img {
+                height: 38px;
+                width: 38px;
+                border-radius: 50%;
+                border: 2px solid rgba(34, 211, 238, 0.35);
+                box-shadow: 0 0 15px rgba(34, 211, 238, 0.15);
+                object-fit: cover;
+            }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        footer {
+            background-color: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+            footer a {
+                color: rgba(34, 211, 238, 0.9) !important;
+                text-decoration: none;
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-black border-bottom border-secondary mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">fitapp_plodik_MVC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <a class="navbar-brand text-info d-flex align-items-center gap-2"
+                   asp-controller="Home" asp-action="Index">
+                    <img class="fit-brand-logo" src="~/img/icons/logo.png" alt="Logo" />
+                    FITAPP
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Machines" asp-action="Index">Stroje</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Menu</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Workouts" asp-action="Index">Tréninky</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Exercises" asp-action="Index">Cviky</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Machines" asp-action="Index">Stroje</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Trainers" asp-action="Index">Trenéři</a>
+                        </li>
                     </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fit-user">
+                            <img src="~/img/icons/profil.png" alt="Profil" />
+                            Plodík
+                        </span>
+                    </div>
+
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - fitapp_plodik_MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer text-muted">
+        <div class="container py-3">
+            &copy; 2026 - FITAPP
+            - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

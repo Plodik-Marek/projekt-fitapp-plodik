@@ -1,0 +1,20 @@
+﻿@model fitapp_plodik_MVC.Entities.Workout
+
+<h2>Upravit trénink</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Datum</label>
+        <input asp-for="WorkoutDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Poznámka</label>
+        <textarea asp-for="Note" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Uložit</button>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</form>

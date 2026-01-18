@@ -1,0 +1,23 @@
+﻿@model fitapp_plodik_MVC.Entities.TrainerSpecialization
+
+<h2>Přidat specializaci trenéra</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <input type="hidden" asp-for="TrainerId" value="@ViewBag.TrainerId" />
+
+    <div class="mb-3">
+        <label class="form-label">Cvik</label>
+        <select asp-for="ExerciseId" class="form-control" asp-items="ViewBag.ExerciseId"></select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Přidat</button>
+    <a asp-controller="Trainers" asp-action="Details" asp-route-id="@ViewBag.TrainerId" class="btn btn-secondary">Zpět</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

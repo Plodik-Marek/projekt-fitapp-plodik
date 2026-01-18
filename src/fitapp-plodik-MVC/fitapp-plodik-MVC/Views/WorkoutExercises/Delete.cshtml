@@ -1,0 +1,11 @@
+﻿@model fitapp_plodik_MVC.Entities.WorkoutExercise
+
+<h2>Smazat cvik z tréninku</h2>
+
+<p>Opravdu chceš smazat cvik: <b>@Model.Exercise.Name</b>?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Smazat</button>
+    <a asp-controller="Workouts" asp-action="Details" asp-route-id="@Model.WorkoutId" class="btn btn-secondary">Zpět</a>
+</form>
