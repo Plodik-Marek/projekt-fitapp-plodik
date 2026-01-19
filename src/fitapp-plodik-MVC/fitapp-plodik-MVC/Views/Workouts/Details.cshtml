@@ -4,100 +4,266 @@
     ViewData["Title"] = "Detail tréninku";
 }
 
-<div class="mb-3">
-    <a asp-action="Index" class="btn btn-outline-secondary">← Zpět</a>
-</div>
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-<div class="card shadow-sm mb-4">
-    <div class="card-header bg-dark text-white">
-        <h4 class="m-0">Detail tréninku</h4>
-    </div>
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
 
-    <div class="card-body">
-        <p class="mb-1">
-            <strong>Datum:</strong> @Model.WorkoutDate.ToString("dd.MM.yyyy")
-        </p>
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 22px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+        margin-bottom: 18px;
+    }
 
-        <p class="mb-0">
-            <strong>Poznámka:</strong> @(Model.Note ?? "-")
-        </p>
-    </div>
+    .fit-meta {
+        color: rgba(255,255,255,0.80);
+        font-size: 1.05rem;
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+    }
 
-    <div class="card-footer text-end">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit trénink</a>
-    </div>
-</div>
+        .fit-meta strong {
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.5px;
+        }
 
-<div class="d-flex justify-content-between align-items-center mb-2">
-    <h4 class="m-0">Cviky v tréninku</h4>
+    .fit-btn {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 16px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-    <a class="btn btn-success"
-       asp-controller="WorkoutExercises"
-       asp-action="Create"
-       asp-route-workoutId="@Model.Id">
-        + Přidat cvik
-    </a>
-</div>
+        .fit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
 
-@if (Model.WorkoutExercises == null || Model.WorkoutExercises.Count == 0)
-{
-    <div class="alert alert-info">
-        Zatím nejsou přidané žádné cviky.
-    </div>
-}
-else
-{
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover table-striped align-middle mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Cvik</th>
-                        <th class="text-center">Série</th>
-                        <th class="text-center">Opakování</th>
-                        <th class="text-center">Váha</th>
-                        <th>Poznámka</th>
-                        <th class="text-end">Akce</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.WorkoutExercises)
-                    {
-                        <tr>
-                            <td class="fw-semibold">
-                                @item.Exercise?.Name
-                            </td>
+    .fit-btn-green {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: rgba(16, 185, 129, 0.95);
+        font-weight: 800;
+        border-radius: 14px;
+        padding: 10px 16px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-                            <td class="text-center">@item.Sets</td>
-                            <td class="text-center">@item.Reps</td>
+        .fit-btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+            color: rgba(16,185,129,1);
+        }
 
-                            <td class="text-center">
-                                @(item.Weight.HasValue? item.Weight.Value.ToString("0.##") : "-")
-                            </td>
+    .fit-btn-yellow {
+        background: rgba(255, 193, 7, 0.14);
+        border: 1px solid rgba(255, 193, 7, 0.35);
+        color: rgba(255, 193, 7, 0.95);
+        font-weight: 800;
+        border-radius: 14px;
+        padding: 10px 16px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-                            <td>
-                                @(string.IsNullOrWhiteSpace(item.Note) ? "-" : item.Note)
-                            </td>
+        .fit-btn-yellow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.18);
+            color: rgba(255,193,7,1);
+        }
 
-                            <td class="text-end">
-                                <a class="btn btn-sm btn-outline-warning"
-                                   asp-controller="WorkoutExercises"
-                                   asp-action="Edit"
-                                   asp-route-id="@item.Id">
-                                    Upravit
-                                </a>
+    .fit-table {
+        width: 100%;
+        margin-top: 10px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
 
-                                <a class="btn btn-sm btn-outline-danger"
-                                   asp-controller="WorkoutExercises"
-                                   asp-action="Delete"
-                                   asp-route-id="@item.Id">
-                                    Smazat
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        .fit-table th {
+            color: rgba(255,255,255,0.75);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            padding: 10px 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+    .fit-row {
+        background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: 0.2s ease;
+    }
+
+        .fit-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 22px rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.18);
+        }
+
+        .fit-row td {
+            padding: 14px 12px;
+            color: rgba(255,255,255,0.85);
+            vertical-align: middle;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+    .fit-empty {
+        color: rgba(255,255,255,0.65);
+        text-align: center;
+        padding: 20px 0;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-mini-btn-warning {
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-weight: 700;
+        border: 1px solid rgba(255,193,7,0.40);
+        background: rgba(255,193,7,0.12);
+        color: rgba(255,193,7,0.95);
+        text-decoration: none;
+    }
+
+        .fit-mini-btn-warning:hover {
+            box-shadow: 0 0 16px rgba(255,193,7,0.18);
+            color: rgba(255,193,7,1);
+        }
+
+    .fit-mini-btn-danger {
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-weight: 700;
+        border: 1px solid rgba(239,68,68,0.40);
+        background: rgba(239,68,68,0.12);
+        color: rgba(239,68,68,0.95);
+        text-decoration: none;
+    }
+
+        .fit-mini-btn-danger:hover {
+            box-shadow: 0 0 16px rgba(239,68,68,0.15);
+            color: rgba(239,68,68,1);
+        }
+</style>
+
+<div class="fit-box">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title">Detail tréninku</div>
+            
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="fit-btn">← Zpět</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="fit-btn-yellow">Upravit trénink</a>
         </div>
     </div>
-}
+
+    <hr style="border-color: rgba(255,255,255,0.10);" />
+
+    <p class="fit-meta">
+        <strong>Datum:</strong> @Model.WorkoutDate.ToString("dd.MM.yyyy")
+    </p>
+
+    <p class="fit-meta mt-2">
+        <strong>Poznámka:</strong> @(Model.Note ?? "-")
+    </p>
+</div>
+
+<div class="fit-box">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title" style="font-size: 1.9rem;">Cviky v tréninku</div>
+            
+        </div>
+
+        <a class="fit-btn-green"
+           asp-controller="WorkoutExercises"
+           asp-action="Create"
+           asp-route-workoutId="@Model.Id">
+            + Přidat cvik
+        </a>
+    </div>
+
+    @if (Model.WorkoutExercises == null || Model.WorkoutExercises.Count == 0)
+    {
+        <div class="fit-empty">
+            Zatím nejsou přidané žádné cviky.
+        </div>
+    }
+    else
+    {
+        <table class="fit-table">
+            <thead>
+                <tr>
+                    <th>Cvik</th>
+                    <th style="text-align:center;">Série</th>
+                    <th style="text-align:center;">Opakování</th>
+                    <th style="text-align:center;">Váha</th>
+                    <th>Poznámka</th>
+                    <th style="text-align:right;">Akce</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.WorkoutExercises)
+                {
+                    <tr class="fit-row">
+                        <td style="font-weight: 800;">@item.Exercise?.Name</td>
+
+                        <td style="text-align:center;">@item.Sets</td>
+                        <td style="text-align:center;">@item.Reps</td>
+
+                        <td style="text-align:center;">
+                            @(item.Weight.HasValue? item.Weight.Value.ToString("0.##") : "-")
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.Note) ? "-" : item.Note)
+                        </td>
+
+                        <td style="text-align:right;">
+                            <a class="fit-mini-btn-warning"
+                               asp-controller="WorkoutExercises"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id">
+                                Upravit
+                            </a>
+
+                            <a class="fit-mini-btn-danger ms-2"
+                               asp-controller="WorkoutExercises"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id">
+                                Smazat
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

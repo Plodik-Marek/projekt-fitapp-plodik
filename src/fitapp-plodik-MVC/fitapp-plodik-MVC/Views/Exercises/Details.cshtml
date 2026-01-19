@@ -1,18 +1,186 @@
 ﻿@model fitapp_plodik_MVC.Entities.Exercise
 
-<h2>Detail cviku</h2>
-
-<p><b>Název:</b> @Model.Name</p>
-<p><b>Partie:</b> @(Model.MuscleGroup ?? "-")</p>
-<p><b>Stroj:</b> @(Model.Machine?.Name ?? "Bez stroje")</p>
-<p><b>Popis:</b> @(Model.Description ?? "-")</p>
-
-@if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-{
-    <img src="@Model.ImageUrl" style="max-width:300px;" />
+@{
+    ViewData["Title"] = "Detail cviku";
 }
 
-<p class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
-    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
-</p>
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
+
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
+
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+    }
+
+    .fit-item {
+        color: rgba(255,255,255,0.85);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+    }
+
+        .fit-item strong {
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.4px;
+        }
+
+    .fit-divider {
+        border-color: rgba(255,255,255,0.10);
+        margin: 14px 0 18px;
+    }
+
+    .fit-image-box {
+        background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: 0 0 28px rgba(0,0,0,0.55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 320px;
+    }
+
+    .fit-image {
+        max-width: 420px;
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 0 0 30px rgba(0,0,0,0.55);
+    }
+
+    .fit-placeholder {
+        width: 100%;
+        min-height: 280px;
+        border-radius: 18px;
+        border: 1px dashed rgba(34, 211, 238, 0.35);
+        background: rgba(34, 211, 238, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(34, 211, 238, 0.95);
+        font-weight: 900;
+        font-size: 3rem;
+    }
+
+    .fit-btn-yellow {
+        background: rgba(255, 193, 7, 0.14);
+        border: 1px solid rgba(255, 193, 7, 0.35);
+        color: rgba(255, 193, 7, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-yellow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.18);
+            color: rgba(255, 193, 7, 1);
+        }
+
+    .fit-btn-danger {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.40);
+        color: rgba(239, 68, 68, 0.95);
+        font-weight: 900;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
+            color: rgba(239,68,68,1);
+        }
+
+    .fit-btn-back {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+</style>
+
+<div class="fit-box">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title">@Model.Name</div>
+            <div class="fit-subtitle">Detail cviku</div>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="fit-btn-yellow">Upravit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="fit-btn-danger">Smazat</a>
+            <a asp-action="Index" class="fit-btn-back">Zpět</a>
+        </div>
+    </div>
+
+    <hr class="fit-divider" />
+
+    <div class="row g-4 align-items-start">
+        <div class="col-lg-6">
+
+            <div class="fit-item"><strong>Název:</strong> @Model.Name</div>
+            <div class="fit-item"><strong>Partie:</strong> @(Model.MuscleGroup ?? "-")</div>
+            <div class="fit-item"><strong>Stroj:</strong> @(Model.Machine?.Name ?? "Bez stroje")</div>
+
+            <div class="fit-item">
+                <strong>Popis:</strong><br />
+                @(string.IsNullOrWhiteSpace(Model.Description) ? "-" : Model.Description)
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+            <div class="fit-image-box">
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Obrázek cviku" class="fit-image" />
+                }
+                else
+                {
+                    <div class="fit-placeholder">🏋️</div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

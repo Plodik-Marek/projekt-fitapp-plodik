@@ -4,27 +4,128 @@
     ViewData["Title"] = "Detail stroje";
 }
 
-<div class="mb-3">
-    <a asp-action="Index" class="btn btn-outline-secondary">← Zpět</a>
-</div>
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-<div class="card shadow-sm">
-    <div class="card-header bg-dark text-white">
-        <h4 class="m-0">@Model.Name</h4>
-    </div>
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
 
-    <div class="card-body">
-        <p><strong>Značka:</strong> @(Model.Brand ?? "-")</p>
-        <p><strong>Partie:</strong> <span class="badge bg-primary">@Model.MuscleGroup</span></p>
-        <p><strong>Popis:</strong> @(Model.Description ?? "-")</p>
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+    }
 
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" class="img-fluid rounded mt-2" style="max-width: 400px;" />
+    .fit-item {
+        color: rgba(255,255,255,0.85);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 10px;
+        font-size: 1.05rem;
+    }
+
+        .fit-item strong {
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.4px;
         }
+
+    .fit-image {
+        max-width: 420px;
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 0 0 30px rgba(0,0,0,0.55);
+        margin-top: 16px;
+    }
+
+    .fit-btn {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+    .fit-btn-yellow {
+        background: rgba(255, 193, 7, 0.14);
+        border: 1px solid rgba(255, 193, 7, 0.35);
+        color: rgba(255, 193, 7, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-yellow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.18);
+            color: rgba(255,193,7,1);
+        }
+
+    .fit-divider {
+        border-color: rgba(255,255,255,0.10);
+        margin: 14px 0 18px;
+    }
+
+    .fit-empty {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-top: 12px;
+    }
+</style>
+
+<div class="fit-box">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title">@Model.Name</div>
+            <div class="fit-subtitle">Detail stroje, partie, popis a obrázek</div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="fit-btn">← Zpět</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="fit-btn-yellow">Upravit</a>
+        </div>
     </div>
 
-    <div class="card-footer text-end">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
-    </div>
+    <hr class="fit-divider" />
+
+    <div class="fit-item"><strong>Značka:</strong> @(Model.Brand ?? "-")</div>
+    <div class="fit-item"><strong>Partie:</strong> @(Model.MuscleGroup ?? "-")</div>
+    <div class="fit-item"><strong>Popis:</strong> @(Model.Description ?? "-")</div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" alt="Obrázek stroje" class="fit-image" />
+    }
+    else
+    {
+        <div class="fit-empty">Obrázek není k dispozici.</div>
+    }
+
 </div>

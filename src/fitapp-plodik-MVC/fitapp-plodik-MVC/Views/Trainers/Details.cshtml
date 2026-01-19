@@ -1,62 +1,234 @@
 ﻿@model fitapp_plodik_MVC.Entities.Trainer
 
-<h2>Detail trenéra</h2>
-
-<p><b>Jméno:</b> @Model.FullName</p>
-<p><b>Email:</b> @(Model.Email ?? "-")</p>
-<p><b>Telefon:</b> @(Model.Phone ?? "-")</p>
-<p><b>Bio:</b> @(Model.Bio ?? "-")</p>
-
-@if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-{
-    <img src="@Model.ImageUrl" style="max-width:250px;" class="rounded mb-3" />
+@{
+    ViewData["Title"] = "Detail trenéra";
 }
 
-<hr />
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-<div class="d-flex justify-content-between align-items-center mb-2">
-    <h4>Specializace (cviky)</h4>
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
 
-    <a class="btn btn-success"
-       asp-controller="TrainerSpecializations"
-       asp-action="Create"
-       asp-route-trainerId="@Model.Id">
-        + Přidat specializaci
-    </a>
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+        margin-bottom: 18px;
+    }
+
+    .fit-item {
+        color: rgba(255,255,255,0.85);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 10px;
+        font-size: 1.05rem;
+    }
+
+        .fit-item strong {
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.4px;
+        }
+
+    .fit-divider {
+        border-color: rgba(255,255,255,0.10);
+        margin: 14px 0 18px;
+    }
+
+    .fit-image {
+        max-width: 320px;
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 0 0 30px rgba(0,0,0,0.55);
+        margin-top: 16px;
+    }
+
+    .fit-btn {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+    .fit-btn-green {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: rgba(16, 185, 129, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 16px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+            color: rgba(16,185,129,1);
+        }
+
+    .fit-mini-btn-danger {
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-weight: 700;
+        border: 1px solid rgba(239,68,68,0.40);
+        background: rgba(239,68,68,0.12);
+        color: rgba(239,68,68,0.95);
+        text-decoration: none;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-mini-btn-danger:hover {
+            box-shadow: 0 0 16px rgba(239,68,68,0.15);
+            color: rgba(239,68,68,1);
+        }
+
+    .fit-table {
+        width: 100%;
+        margin-top: 12px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+        .fit-table th {
+            color: rgba(255,255,255,0.75);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            padding: 10px 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+    .fit-row {
+        background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: 0.2s ease;
+    }
+
+        .fit-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 22px rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.18);
+        }
+
+        .fit-row td {
+            padding: 14px 12px;
+            color: rgba(255,255,255,0.85);
+            vertical-align: middle;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+    .fit-empty {
+        color: rgba(255,255,255,0.65);
+        text-align: center;
+        padding: 12px 0;
+        font-family: 'Montserrat', sans-serif;
+    }
+</style>
+
+<div class="fit-box">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title">@Model.FullName</div>
+            <div class="fit-subtitle">Detail trenéra + specializace</div>
+        </div>
+
+        <a asp-action="Index" class="fit-btn">← Zpět</a>
+    </div>
+
+    <hr class="fit-divider" />
+
+    <div class="fit-item"><strong>Email:</strong> @(Model.Email ?? "-")</div>
+    <div class="fit-item"><strong>Telefon:</strong> @(Model.Phone ?? "-")</div>
+    <div class="fit-item"><strong>Bio:</strong> @(Model.Bio ?? "-")</div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" class="fit-image" alt="Obrázek trenéra" />
+    }
+    else
+    {
+        <div class="fit-empty">Obrázek není k dispozici.</div>
+    }
+
 </div>
 
-@if (Model.TrainerSpecializations == null || Model.TrainerSpecializations.Count == 0)
-{
-    <p class="text-muted">Zatím bez specializací.</p>
-}
-else
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Cvik</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.TrainerSpecializations)
-            {
-                <tr>
-                    <td>@item.Exercise?.Name</td>
-                    <td class="text-end">
-                        <a class="btn btn-sm btn-outline-danger"
-                           asp-controller="TrainerSpecializations"
-                           asp-action="Delete"
-                           asp-route-id="@item.Id">
-                            Smazat
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="fit-box">
 
-<p class="mt-3">
-    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
-</p>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="fit-page-title" style="font-size: 1.9rem;">Specializace (cviky)</div>
+            <div class="fit-subtitle">Cviky, které trenér ovládá / učí</div>
+        </div>
+
+        <a class="fit-btn-green"
+           asp-controller="TrainerSpecializations"
+           asp-action="Create"
+           asp-route-trainerId="@Model.Id">
+            + Přidat specializaci
+        </a>
+    </div>
+
+    @if (Model.TrainerSpecializations == null || Model.TrainerSpecializations.Count == 0)
+    {
+        <div class="fit-empty">Zatím bez specializací.</div>
+    }
+    else
+    {
+        <table class="fit-table">
+            <thead>
+                <tr>
+                    <th>Cvik</th>
+                    <th style="text-align:right;">Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TrainerSpecializations)
+                {
+                    <tr class="fit-row">
+                        <td style="font-weight:800;">@item.Exercise?.Name</td>
+                        <td style="text-align:right;">
+                            <a class="fit-mini-btn-danger"
+                               asp-controller="TrainerSpecializations"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id">
+                                Smazat
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>

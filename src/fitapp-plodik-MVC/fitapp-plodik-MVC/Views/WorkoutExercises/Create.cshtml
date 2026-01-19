@@ -1,47 +1,159 @@
 ﻿@model fitapp_plodik_MVC.Entities.WorkoutExercise
 
-<h2>Přidat cvik do tréninku</h2>
+@{
+    ViewData["Title"] = "Přidat cvik do tréninku";
+}
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
 
-    <input type="hidden" asp-for="WorkoutId" value="@ViewBag.WorkoutId" />
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+    }
+
+    .fit-label {
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 6px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-input {
+        background: rgba(0,0,0,0.45) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        color: #fff !important;
+        border-radius: 14px !important;
+        padding: 10px 12px !important;
+    }
+
+        .fit-input:focus {
+            border-color: rgba(34, 211, 238, 0.45) !important;
+            box-shadow: 0 0 0 0.15rem rgba(34, 211, 238, 0.15) !important;
+        }
+
+    select.fit-input option {
+        background: #0a0a0a;
+        color: #fff;
+    }
+
+    .fit-validation {
+        color: rgba(239,68,68,0.95);
+        font-weight: 700;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-btn-save {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: rgba(16, 185, 129, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+            color: rgba(16,185,129,1);
+        }
+
+    .fit-btn-back {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+</style>
+
+<div class="fit-box">
 
     <div class="mb-3">
-        <label class="form-label">Cvik</label>
-        <select asp-for="ExerciseId" class="form-control" asp-items="ViewBag.ExerciseId"></select>
-        <span asp-validation-for="ExerciseId" class="text-danger"></span>
+        <div class="fit-page-title">Přidat cvik do tréninku</div>
+        <div class="fit-subtitle">Vyber cvik a nastav série, opakování a váhu</div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Série</label>
-        <input asp-for="Sets" class="form-control" />
-        <span asp-validation-for="Sets" class="text-danger"></span>
-    </div>
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
 
-    <div class="mb-3">
-        <label class="form-label">Opakování</label>
-        <input asp-for="Reps" class="form-control" />
-        <span asp-validation-for="Reps" class="text-danger"></span>
-    </div>
+        <div asp-validation-summary="All" class="fit-validation mb-3"></div>
 
-    <div class="mb-3">
-        <label class="form-label">Váha</label>
-        <input asp-for="Weight" class="form-control" />
-        <span asp-validation-for="Weight" class="text-danger"></span>
-    </div>
+        <input type="hidden" asp-for="WorkoutId" value="@ViewBag.WorkoutId" />
 
-    <div class="mb-3">
-        <label class="form-label">Poznámka</label>
-        <input asp-for="Note" class="form-control" />
-        <span asp-validation-for="Note" class="text-danger"></span>
-    </div>
+        <div class="mb-3">
+            <label class="fit-label">Cvik</label>
+            <select asp-for="ExerciseId" class="form-control fit-input" asp-items="ViewBag.ExerciseId">
+                <option value="">-- vyber cvik --</option>
+            </select>
+            <span asp-validation-for="ExerciseId" class="fit-validation"></span>
+        </div>
 
-    <button type="submit" class="btn btn-success">Přidat</button>
-    <a asp-controller="Workouts" asp-action="Details" asp-route-id="@ViewBag.WorkoutId" class="btn btn-secondary">Zpět</a>
-</form>
+        <div class="mb-3">
+            <label class="fit-label">Série</label>
+            <input asp-for="Sets" class="form-control fit-input" />
+            <span asp-validation-for="Sets" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="fit-label">Opakování</label>
+            <input asp-for="Reps" class="form-control fit-input" />
+            <span asp-validation-for="Reps" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="fit-label">Váha</label>
+            <input asp-for="Weight" class="form-control fit-input" />
+            <span asp-validation-for="Weight" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="fit-label">Poznámka</label>
+            <input asp-for="Note" class="form-control fit-input" />
+            <span asp-validation-for="Note" class="fit-validation"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="fit-btn-save">Přidat</button>
+            <a asp-controller="Workouts" asp-action="Details" asp-route-id="@ViewBag.WorkoutId" class="fit-btn-back">
+                Zpět
+            </a>
+        </div>
+    </form>
+
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

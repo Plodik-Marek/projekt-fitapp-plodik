@@ -1,51 +1,125 @@
 ﻿@model fitapp_plodik_MVC.Entities.Machine
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Smazat stroj";
 }
 
-<h1>Delete</h1>
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-<h3>Opravdu chcete tento stroj smazat?</h3>
-<div>
-    <h4>Machine</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MuscleGroup)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MuscleGroup)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
+
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+    }
+
+    .fit-danger-note {
+        background: rgba(239, 68, 68, 0.10);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        border-radius: 18px;
+        padding: 14px 16px;
+        margin-top: 14px;
+        color: rgba(255,255,255,0.88);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-danger-note b {
+            color: rgba(255,255,255,1);
+        }
+
+    .fit-item {
+        color: rgba(255,255,255,0.85);
+        font-family: 'Montserrat', sans-serif;
+        margin-top: 10px;
+        font-size: 1.05rem;
+    }
+
+        .fit-item strong {
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.4px;
+        }
+
+    .fit-divider {
+        border-color: rgba(255,255,255,0.10);
+        margin: 16px 0 16px;
+    }
+
+    .fit-btn-delete {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.40);
+        color: rgba(239, 68, 68, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .fit-btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
+            color: rgba(239,68,68,1);
+        }
+
+    .fit-btn-back {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .fit-btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+</style>
+
+<div class="fit-box">
+
+    <div class="mb-2">
+        <h2 class="fit-page-title">Smazat stroj</h2>
+        <div class="fit-subtitle">Tato akce je nevratná</div>
+    </div>
+
+    <div class="fit-danger-note">
+        Opravdu chceš smazat stroj: <b>@Model.Name</b>?
+    </div>
+
+    <hr class="fit-divider" />
+
+    <div class="fit-item"><strong>Značka:</strong> @(Model.Brand ?? "-")</div>
+    <div class="fit-item"><strong>Partie:</strong> @(Model.MuscleGroup ?? "-")</div>
+    <div class="fit-item"><strong>Popis:</strong> @(Model.Description ?? "-")</div>
+
+    <form asp-action="Delete" method="post" class="mt-4">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="fit-btn-delete">Smazat</button>
+            <a asp-action="Index" class="fit-btn-back">Zpět</a>
+        </div>
     </form>
+
 </div>

@@ -1,54 +1,148 @@
 ﻿@model fitapp_plodik_MVC.Entities.Machine
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Upravit stroj";
 }
 
-<h1>Edit</h1>
+<style>
+    .fit-page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-size: 2.3rem;
+        margin-bottom: 0;
+    }
 
-<h4>Machine</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MuscleGroup" class="control-label"></label>
-                <input asp-for="MuscleGroup" class="form-control" />
-                <span asp-validation-for="MuscleGroup" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    .fit-subtitle {
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 18px;
+    }
+
+    .fit-box {
+        background: rgba(18, 18, 18, 0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 22px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
+    }
+
+    .fit-label {
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 6px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-input {
+        background: rgba(0,0,0,0.45) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        color: #fff !important;
+        border-radius: 14px !important;
+        padding: 10px 12px !important;
+    }
+
+        .fit-input:focus {
+            border-color: rgba(34, 211, 238, 0.45) !important;
+            box-shadow: 0 0 0 0.15rem rgba(34, 211, 238, 0.15) !important;
+        }
+
+    .fit-validation {
+        color: rgba(239,68,68,0.95);
+        font-weight: 700;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .fit-btn-save {
+        background: rgba(255, 193, 7, 0.14);
+        border: 1px solid rgba(255, 193, 7, 0.35);
+        color: rgba(255, 193, 7, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .fit-btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.18);
+            color: rgba(255, 193, 7, 1);
+        }
+
+    .fit-btn-back {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        border-radius: 14px;
+        padding: 10px 18px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .fit-btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+            color: #fff;
+        }
+</style>
+
+<div class="fit-box">
+
+    <div class="mb-3">
+        <div class="fit-page-title">Upravit stroj</div>
+        <div class="fit-subtitle">Uprav název, značku, partii a obrázek stroje</div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="fit-validation mb-3"></div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="fit-label">Název</label>
+            <input asp-for="Name" class="form-control fit-input" />
+            <span asp-validation-for="Name" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Brand" class="fit-label">Značka</label>
+            <input asp-for="Brand" class="form-control fit-input" />
+            <span asp-validation-for="Brand" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MuscleGroup" class="fit-label">Partie</label>
+            <input asp-for="MuscleGroup" class="form-control fit-input" />
+            <span asp-validation-for="MuscleGroup" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="fit-label">Popis</label>
+            <textarea asp-for="Description" rows="4" class="form-control fit-input"></textarea>
+            <span asp-validation-for="Description" class="fit-validation"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="ImageUrl" class="fit-label">Obrázek URL</label>
+            <input asp-for="ImageUrl" class="form-control fit-input" />
+            <span asp-validation-for="ImageUrl" class="fit-validation"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="fit-btn-save">Uložit</button>
+            <a asp-action="Index" class="fit-btn-back">Zpět</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
