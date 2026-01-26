@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<style>
+    body {
+        background: #0a0a0a;
+    }
+
+    .fit-login-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .fit-login-box {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(18,18,18,0.95);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
+        padding: 35px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 0 40px rgba(34,211,238,0.08);
+    }
+
+    .fit-login-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2.4rem;
+        letter-spacing: 2px;
+        text-align: center;
+        margin-bottom: 6px;
+    }
+
+    .fit-login-sub {
+        text-align: center;
+        color: rgba(255,255,255,0.65);
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 25px;
+    }
+
+    .fit-label {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: rgba(255,255,255,0.85);
+    }
+
+    .fit-input {
+        background: rgba(0,0,0,0.5) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 14px !important;
+        padding: 10px 12px !important;
+        color: #fff !important;
+    }
+
+        .fit-input:focus {
+            border-color: rgba(34,211,238,0.45) !important;
+            box-shadow: 0 0 0 0.15rem rgba(34,211,238,0.15) !important;
+        }
+
+    .fit-btn-login {
+        width: 100%;
+        margin-top: 10px;
+        background: rgba(34,211,238,0.12);
+        border: 1px solid rgba(34,211,238,0.35);
+        color: rgba(34,211,238,0.95);
+        font-weight: 800;
+        letter-spacing: 1px;
+        border-radius: 14px;
+        padding: 12px;
+        transition: 0.2s ease;
+    }
+
+        .fit-btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(34,211,238,0.15);
+        }
+
+    .fit-login-links {
+        text-align: center;
+        margin-top: 18px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .fit-login-links a {
+            color: rgba(34,211,238,0.95);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            .fit-login-links a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="fit-login-page">
+    <div class="fit-login-box">
+
+        <div class="fit-login-title">FITAPP LOGIN</div>
+        <div class="fit-login-sub">Přihlaste se do svého účtu</div>
+
+        <form>
+            <div class="mb-3">
+                <label class="fit-label">Email</label>
+                <input type="email" class="form-control fit-input" placeholder="zadej e-mail" />
+            </div>
+
+            <div class="mb-3">
+                <label class="fit-label">Heslo</label>
+                <input type="password" class="form-control fit-input" placeholder="••••••••" />
+            </div>
+
+            <button type="submit" class="fit-btn-login">Přihlásit se</button>
+        </form>
+
+        <div class="fit-login-links">
+            <a href="#">Registrace</a>
+        </div>
+
+    </div>
+</div>

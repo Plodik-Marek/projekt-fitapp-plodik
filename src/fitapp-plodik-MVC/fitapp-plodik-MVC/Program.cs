@@ -30,7 +30,7 @@ namespace fitapp_plodik_MVC
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Home}/{action=login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();
