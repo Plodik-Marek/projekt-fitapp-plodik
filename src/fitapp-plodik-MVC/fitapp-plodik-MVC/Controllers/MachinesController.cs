@@ -12,146 +12,78 @@ namespace fitapp_plodik_MVC.Controllers
 {
     public class MachinesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _db;
+        private readonly IWebHostEnvironment _env;
 
-        public MachinesController(AppDbContext context)
+        public MachinesController(AppDbContext db, IWebHostEnvironment env)
         {
-            _context = context;
+            _db = db;
+            _env = env;
         }
 
-        // GET: Machines
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() => View(await _db.Machines.ToListAsync());
+
+        public async Task<IActionResult> Details(int id)
         {
-            return View(await _context.Machines.ToListAsync());
-        }
-
-        // GET: Machines/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var machine = await _context.Machines
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (machine == null)
-            {
-                return NotFound();
-            }
-
+            var machine = await _db.Machines.FindAsync(id);
+            if (machine == null) return NotFound();
             return View(machine);
         }
 
-        // GET: Machines/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
-        // POST: Machines/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Brand,MuscleGroup,Description,ImageUrl")] Machine machine)
+        public async Task<IActionResult> Create(Machine machine, IFormFile? imageFile)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(machine);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(machine);
-        }
+            if (!ModelState.IsValid) return View(machine);
 
-        // GET: Machines/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            if (imageFile != null)
             {
-                return NotFound();
+                string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
+                Directory.CreateDirectory(folder);
+
+                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+                await imageFile.CopyToAsync(stream);
+
+                machine.ImageUrl = "/img/uploads/machines/" + fileName;
             }
 
-            var machine = await _context.Machines.FindAsync(id);
-            if (machine == null)
-            {
-                return NotFound();
-            }
-            return View(machine);
-        }
-
-        // POST: Machines/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Brand,MuscleGroup,Description,ImageUrl")] Machine machine)
-        {
-            if (id != machine.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(machine);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MachineExists(machine.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(machine);
-        }
-
-        // GET: Machines/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var machine = await _context.Machines
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (machine == null)
-            {
-                return NotFound();
-            }
-
-            return View(machine);
-        }
-
-        // POST: Machines/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var machine = await _context.Machines.FindAsync(id);
-            if (machine != null)
-            {
-                _context.Machines.Remove(machine);
-            }
-
-            await _context.SaveChangesAsync();
+            _db.Add(machine);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MachineExists(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return _context.Machines.Any(e => e.Id == id);
+            var machine = await _db.Machines.FindAsync(id);
+            if (machine == null) return NotFound();
+            return View(machine);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Machine machine, IFormFile? imageFile)
+        {
+            if (id != machine.Id) return NotFound();
+
+            if (imageFile != null)
+            {
+                string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
+                Directory.CreateDirectory(folder);
+
+                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+                await imageFile.CopyToAsync(stream);
+
+                machine.ImageUrl = "/img/uploads/machines/" + fileName;
+            }
+
+            _db.Update(machine);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
+
 }

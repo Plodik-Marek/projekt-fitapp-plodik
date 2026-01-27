@@ -19,6 +19,9 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\exercises\" />
+    <Folder Include="wwwroot\img\uploads\exercises\" />
+    <Folder Include="wwwroot\img\uploads\machines\" />
+    <Folder Include="wwwroot\img\uploads\trainers\" />
   </ItemGroup>
 
 </Project>

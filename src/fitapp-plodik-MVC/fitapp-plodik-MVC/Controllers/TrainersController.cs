@@ -1,103 +1,80 @@
 ﻿using fitapp_plodik_MVC.Data;
-using fitapp_plodik_MVC.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using fitapp_plodik_MVC.Entities;
 
-namespace fitapp_plodik_MVC.Controllers
+public class MachinesController : Controller
 {
-    public class TrainersController : Controller
+    private readonly AppDbContext _db;
+    private readonly IWebHostEnvironment _env;
+
+    public MachinesController(AppDbContext db, IWebHostEnvironment env)
     {
-        private readonly AppDbContext _db;
+        _db = db;
+        _env = env;
+    }
 
-        public TrainersController(AppDbContext db)
+    public async Task<IActionResult> Index() => View(await _db.Machines.ToListAsync());
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var machine = await _db.Machines.FindAsync(id);
+        if (machine == null) return NotFound();
+        return View(machine);
+    }
+
+    public IActionResult Create() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Machine machine, IFormFile? imageFile)
+    {
+        if (!ModelState.IsValid) return View(machine);
+
+        if (imageFile != null)
         {
-            _db = db;
+            string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
+            Directory.CreateDirectory(folder);
+
+            string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+            using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+            await imageFile.CopyToAsync(stream);
+
+            machine.ImageUrl = "/img/uploads/machines/" + fileName;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            
-            var data = await _db.Trainers
-                .OrderBy(t => t.FullName)
-                .ToListAsync();
+        _db.Add(machine);
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
 
-            return View("Index",data);
+    public async Task<IActionResult> Edit(int id)
+    {
+        var machine = await _db.Machines.FindAsync(id);
+        if (machine == null) return NotFound();
+        return View(machine);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Machine machine, IFormFile? imageFile)
+    {
+        if (id != machine.Id) return NotFound();
+
+        if (imageFile != null)
+        {
+            string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
+            Directory.CreateDirectory(folder);
+
+            string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+            using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+            await imageFile.CopyToAsync(stream);
+
+            machine.ImageUrl = "/img/uploads/machines/" + fileName;
         }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var trainer = await _db.Trainers
-                .Include(t => t.TrainerSpecializations)
-                    .ThenInclude(ts => ts.Exercise)
-                .FirstOrDefaultAsync(t => t.Id == id);
-
-            if (trainer == null)
-                return NotFound();
-
-            return View(trainer);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Trainer trainer)
-        {
-            if (!ModelState.IsValid)
-                return View(trainer);
-
-            _db.Trainers.Add(trainer);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> Edit(int id)
-        {
-            var trainer = await _db.Trainers.FindAsync(id);
-            if (trainer == null)
-                return NotFound();
-
-            return View(trainer);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Trainer trainer)
-        {
-            if (id != trainer.Id)
-                return NotFound();
-
-            if (!ModelState.IsValid)
-                return View(trainer);
-
-            _db.Trainers.Update(trainer);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            var trainer = await _db.Trainers.FirstOrDefaultAsync(t => t.Id == id);
-            if (trainer == null)
-                return NotFound();
-
-            return View(trainer);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var trainer = await _db.Trainers.FindAsync(id);
-            if (trainer == null)
-                return NotFound();
-
-            _db.Trainers.Remove(trainer);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        _db.Update(machine);
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 }
