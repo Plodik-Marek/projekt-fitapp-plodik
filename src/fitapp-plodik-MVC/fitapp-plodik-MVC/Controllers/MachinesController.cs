@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using fitapp_plodik_MVC.Data;
+﻿using fitapp_plodik_MVC.Data;
 using fitapp_plodik_MVC.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace fitapp_plodik_MVC.Controllers
 {
@@ -21,7 +16,10 @@ namespace fitapp_plodik_MVC.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> Index() => View(await _db.Machines.ToListAsync());
+        public async Task<IActionResult> Index()
+        {
+            return View(await _db.Machines.ToListAsync());
+        }
 
         public async Task<IActionResult> Details(int id)
         {
@@ -30,7 +28,10 @@ namespace fitapp_plodik_MVC.Controllers
             return View(machine);
         }
 
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -38,19 +39,21 @@ namespace fitapp_plodik_MVC.Controllers
         {
             if (!ModelState.IsValid) return View(machine);
 
-            if (imageFile != null)
+            if (imageFile != null && imageFile.Length > 0)
             {
                 string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
                 Directory.CreateDirectory(folder);
 
                 string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+                string filePath = Path.Combine(folder, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
                 await imageFile.CopyToAsync(stream);
 
                 machine.ImageUrl = "/img/uploads/machines/" + fileName;
             }
 
-            _db.Add(machine);
+            _db.Machines.Add(machine);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -68,22 +71,54 @@ namespace fitapp_plodik_MVC.Controllers
         {
             if (id != machine.Id) return NotFound();
 
-            if (imageFile != null)
+            var existingMachine = await _db.Machines
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (existingMachine == null) return NotFound();
+
+            if (!ModelState.IsValid) return View(machine);
+
+            if (imageFile != null && imageFile.Length > 0)
             {
                 string folder = Path.Combine(_env.WebRootPath, "img/uploads/machines");
                 Directory.CreateDirectory(folder);
 
                 string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                using var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create);
+                string filePath = Path.Combine(folder, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
                 await imageFile.CopyToAsync(stream);
 
                 machine.ImageUrl = "/img/uploads/machines/" + fileName;
+            }
+            else
+            {
+                machine.ImageUrl = existingMachine.ImageUrl;
             }
 
             _db.Update(machine);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-    }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            var machine = await _db.Machines.FindAsync(id);
+            if (machine == null) return NotFound();
+            return View(machine);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var machine = await _db.Machines.FindAsync(id);
+            if (machine == null) return NotFound();
+
+            _db.Machines.Remove(machine);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }

@@ -1,154 +1,128 @@
-﻿@model IEnumerable<fitapp_plodik_MVC.Entities.Machine>
-
+﻿@model List<fitapp_plodik_MVC.Entities.Machine>
 @{
     ViewData["Title"] = "Stroje";
 }
 
 <style>
     .fit-page-title {
-        font-family: 'Bebas Neue', sans-serif;
+        font-family: 'Bebas Neue',sans-serif;
         letter-spacing: 2px;
-        font-size: 2.2rem;
-        margin-bottom: 8px;
+        font-size: 2.4rem;
     }
 
-    .fit-box {
-        background: rgba(18, 18, 18, 0.92);
-        border: 1px solid rgba(255,255,255,0.10);
+    .fit-subtitle {
+        color: rgba(255,255,255,.65);
+        font-family: 'Montserrat';
+        margin-bottom: 18px;
+    }
+
+    .fit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+        gap: 22px;
+    }
+
+    .fit-card {
+        background: rgba(18,18,18,.92);
+        border: 1px solid rgba(255,255,255,.1);
         border-radius: 22px;
-        padding: 20px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 35px rgba(34, 211, 238, 0.08);
-    }
-
-    .fit-btn {
-        background: rgba(16, 185, 129, 0.12);
-        border: 1px solid rgba(16, 185, 129, 0.35);
-        color: rgba(16, 185, 129, 0.95);
-        font-weight: 800;
-        letter-spacing: 0.6px;
-        border-radius: 14px;
-        padding: 10px 16px;
-        transition: 0.2s ease;
-        text-decoration: none;
-        display: inline-block;
-        font-family: 'Montserrat', sans-serif;
-    }
-
-        .fit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
-            color: rgba(16,185,129,1);
-        }
-
-    .fit-table {
-        width: 100%;
-        margin-top: 12px;
-        border-collapse: separate;
-        border-spacing: 0 10px;
-    }
-
-        .fit-table th {
-            color: rgba(255,255,255,0.75);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.85rem;
-            padding: 10px 12px;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-    .fit-row {
-        background: rgba(0,0,0,0.35);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 16px;
         overflow: hidden;
-        transition: 0.2s ease;
+        transition: .2s;
+        box-shadow: 0 0 30px rgba(34,211,238,.06);
     }
 
-        .fit-row:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 22px rgba(34, 211, 238, 0.10);
-            border: 1px solid rgba(34, 211, 238, 0.18);
+        .fit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(34,211,238,.15);
         }
 
-        .fit-row td {
-            padding: 14px 12px;
-            color: rgba(255,255,255,0.85);
-            vertical-align: middle;
-            font-family: 'Montserrat', sans-serif;
-        }
+    .fit-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .fit-body {
+        padding: 16px;
+    }
+
+    .fit-name {
+        font-weight: 900;
+        font-size: 1.2rem;
+        letter-spacing: .5px;
+    }
+
+    .fit-brand {
+        font-size: .9rem;
+        color: rgba(34,211,238,.95);
+        font-weight: 700;
+    }
+
+    .fit-muscle {
+        font-size: .85rem;
+        color: rgba(255,255,255,.65);
+        margin-bottom: 10px;
+    }
 
     .fit-links a {
-        color: rgba(34, 211, 238, 0.95);
-        font-weight: 700;
+        font-size: .85rem;
         text-decoration: none;
-        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        color: rgba(34,211,238,.95);
     }
 
-        .fit-links a:hover {
-            text-decoration: underline;
-        }
-
-    .fit-empty {
-        color: rgba(255,255,255,0.65);
-        text-align: center;
-        padding: 25px 0;
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    .fit-muted {
-        color: rgba(255,255,255,0.65);
+    .fit-btn-add {
+        background: rgba(16,185,129,.12);
+        border: 1px solid rgba(16,185,129,.35);
+        color: rgba(16,185,129,.95);
+        font-weight: 800;
+        border-radius: 14px;
+        padding: 10px 18px;
+        text-decoration: none;
     }
 </style>
 
-<div class="fit-box">
-
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-        <div>
-            <div class="fit-page-title">Stroje</div>
-            <div class="fit-muted">Databáze fitness strojů a svalových partií</div>
-        </div>
-
-        <a asp-action="Create" class="fit-btn">+ Přidat stroj</a>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <div class="fit-page-title">Stroje</div>
+        <div class="fit-subtitle">Databáze fitness strojů</div>
     </div>
-
-    @if (Model == null || !Model.Any())
-    {
-        <div class="fit-empty">
-            Zatím nejsou žádné stroje.
-        </div>
-    }
-    else
-    {
-        <table class="fit-table">
-            <thead>
-                <tr>
-                    <th>Název</th>
-                    <th>Značka</th>
-                    <th>Partie</th>
-                    <th style="text-align:right;">Akce</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr class="fit-row">
-                        <td style="font-weight:900;">@item.Name</td>
-                        <td>@(item.Brand ?? "-")</td>
-                        <td>@(item.MuscleGroup ?? "-")</td>
-
-                        <td class="fit-links" style="text-align:right;">
-                            <a asp-action="Details" asp-route-id="@item.Id">Detail</a>
-                            <span style="color: rgba(255,255,255,0.35);"> | </span>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Upravit</a>
-                            <span style="color: rgba(255,255,255,0.35);"> | </span>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Smazat</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-
+    <a asp-action="Create" class="fit-btn-add">+ Přidat stroj</a>
 </div>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="fit-subtitle">Zatím nejsou žádné stroje.</div>
+}
+else
+{
+    <div class="fit-grid">
+        @foreach (var m in Model)
+        {
+            <div class="fit-card">
+
+                @if (!string.IsNullOrEmpty(m.ImageUrl))
+                {
+                    <img src="@m.ImageUrl" class="fit-img" />
+                }
+                else
+                {
+                    <div class="fit-img d-flex align-items-center justify-content-center" style="background:rgba(34,211,238,.12);font-size:2.2rem;">🏋️‍♂️</div>
+                }
+
+                <div class="fit-body">
+                    <div class="fit-name">@m.Name</div>
+                    <div class="fit-brand">@m.Brand</div>
+                    <div class="fit-muscle">@m.MuscleGroup</div>
+
+                    <div class="fit-links mt-2">
+                        <a asp-action="Details" asp-route-id="@m.Id">Detail</a> |
+                        <a asp-action="Edit" asp-route-id="@m.Id">Upravit</a> |
+                        <a asp-action="Delete" asp-route-id="@m.Id">Smazat</a>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+}
