@@ -5,7 +5,7 @@ namespace fitapp_plodik_MVC.Auto_img;
 
 public static class ImageHelper
 {
-    public static async Task<string?> SaveImageAsync(IFormFile? file, string subFolder, IWebHostEnvironment env)
+    public static async Task<string?> SaveImageAsync(IFormFile? file, string subFolder, IWebHostEnvironment env)  // async metoda která čeká na ukládání souboru, IFormFile je obrázek z formuláře, subFOlder do jaké složky se uloží, env přístup k cesteě wwwroot
     {
         if (file == null || file.Length == 0)
             return null;

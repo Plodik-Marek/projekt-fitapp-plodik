@@ -33,14 +33,14 @@ namespace fitapp_plodik_MVC.Controllers
             return View(exercise);
         }
 
-        public IActionResult Create()
+        public IActionResult Create() // CREATE ALE Get method (formulář)
         {
             ViewBag.MachineId = new SelectList(_db.Machines, "Id", "Name");
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // CREATE ALE Post method (zpracování formuláře)
         public async Task<IActionResult> Create(Exercise exercise, IFormFile? imageFile)
         {
             if (!ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace fitapp_plodik_MVC.Controllers
                 string folder = Path.Combine(_env.WebRootPath, "img/uploads/exercises");
                 Directory.CreateDirectory(folder);
 
-                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);  // zajímavá věc která generuje unikátní jméno souboru a uloží ho do správné složky
                 string filePath = Path.Combine(folder, fileName);
 
                 using var stream = new FileStream(filePath, FileMode.Create);
@@ -126,7 +126,7 @@ namespace fitapp_plodik_MVC.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // věc která cháání formulář před útoky 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var exercise = await _db.Exercises.FindAsync(id);
