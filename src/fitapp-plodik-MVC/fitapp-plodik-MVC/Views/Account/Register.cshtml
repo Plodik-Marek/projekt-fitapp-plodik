@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Registrace";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
@@ -84,25 +84,38 @@
             .login-links a:hover {
                 text-decoration: underline;
             }
+
+    .error-msg {
+        color: #ff4d4d;
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
 </style>
 
 <div class="login-card">
 
     <div class="login-title">FITAPP</div>
-    <div class="login-subtitle">Přihlas se do svého fitness účtu</div>
+    <div class="login-subtitle">Vytvoř si svůj fitness účet</div>
 
-    <form>
+    @if (ViewBag.Error != null)
+    {
+        <div class="error-msg">@ViewBag.Error</div>
+    }
+
+    <form asp-controller="Account" asp-action="Register" method="post">
         <label class="fit-label">Email</label>
-        <input type="email" class="form-control fit-input" placeholder="zadej e-mail" />
+        <input type="email" name="email" class="form-control fit-input" placeholder="zadej e-mail" required />
 
         <label class="fit-label">Heslo</label>
-        <input type="password" class="form-control fit-input" placeholder="••••••••" />
+        <input type="password" name="password" class="form-control fit-input" placeholder="••••••••" required />
 
-        <button type="submit" class="btn btn-login">PŘIHLÁSIT SE</button>
+        <label class="fit-label">Potvrdit heslo</label>
+        <input type="password" name="confirmPassword" class="form-control fit-input" placeholder="••••••••" required />
+
+        <button type="submit" class="btn-login"> Přihlásit se </button>
     </form>
 
-    <div class="login-links">
-        Nemáš účet? <a href="#">Registrace</a>
-    </div>
+    
 
 </div>

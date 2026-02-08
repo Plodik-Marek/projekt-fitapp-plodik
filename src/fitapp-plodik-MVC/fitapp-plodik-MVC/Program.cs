@@ -1,4 +1,5 @@
 using fitapp_plodik_MVC.Data;
+using fitapp_plodik_MVC.Security;
 
 namespace fitapp_plodik_MVC
 {
@@ -6,11 +7,15 @@ namespace fitapp_plodik_MVC
     {
         public static void Main(string[] args)
         {
+
+            
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>();
+            builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
@@ -24,13 +29,13 @@ namespace fitapp_plodik_MVC
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=login}/{id?}")
+                pattern: "{controller=Account}/{action=login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

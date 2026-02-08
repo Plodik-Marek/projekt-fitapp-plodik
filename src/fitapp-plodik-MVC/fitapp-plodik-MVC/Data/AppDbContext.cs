@@ -15,6 +15,8 @@ namespace fitapp_plodik_MVC.Data
         public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
         public DbSet<TrainerSpecialization> TrainerSpecializations { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
