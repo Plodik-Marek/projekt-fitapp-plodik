@@ -19,7 +19,7 @@ namespace fitapp_plodik_MVC.Security
         public static bool Verify(string entered, string storedHash)
         {
             
-            return HashPassword(entered) == storedHash;
+            return HashPassword(entered) == storedHash;  // zde porovnávám zadané heslo s 
         }
 
 

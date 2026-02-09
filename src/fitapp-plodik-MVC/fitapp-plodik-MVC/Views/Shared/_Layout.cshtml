@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+
+
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="utf-8" />
@@ -136,7 +142,7 @@
                     <div class="d-flex align-items-center gap-2">
                         <span class="fit-user">
                             <img src="~/img/icons/profil.png" alt="Profil" />
-                            User1
+                            @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")
                         </span>
                     </div>
 

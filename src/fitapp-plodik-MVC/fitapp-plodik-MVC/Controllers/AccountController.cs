@@ -40,17 +40,13 @@ namespace fitapp_plodik_MVC.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("UserId", user.Id.ToString());
+            HttpContext.Session.SetString("UserId", user.Id.ToString());  // kontrola pro aplikaci že je uživatel přihlášen
             HttpContext.Session.SetString("UserEmail", user.Email);
 
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
+        
 
         /*
         public IActionResult TestHash()
@@ -101,6 +97,20 @@ namespace fitapp_plodik_MVC.Controllers
             
             return RedirectToAction("Login");
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            Response.Cookies.Delete(".AspNetCore.Session");
+
+            return RedirectToAction("Login", "Account");
+        }
+
+
+
+
+
 
 
 
