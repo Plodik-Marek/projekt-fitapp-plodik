@@ -140,10 +140,16 @@
                     </ul>
 
                     <div class="d-flex align-items-center gap-2">
-                        <span class="fit-user">
-                            <img src="~/img/icons/profil.png" alt="Profil" />
-                            @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")
-                        </span>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserEmail") != null)
+                        {
+                            <a asp-controller="Account"
+                               asp-action="Profile"
+                               class="fit-user text-decoration-none">
+                                <img src="~/img/icons/profil.png" alt="Profil" />
+                                @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")
+                            </a>
+                        }
+
                     </div>
 
                 </div>

@@ -21,6 +21,16 @@ namespace fitapp_plodik_MVC.Controllers
             return View();
         }
 
+        /*
+        public IActionResult TestHash()
+        {
+            var hash = PasswordHelper.HashPassword("marek");   // metoda pro získání hashovaného hesla 
+            return Content(hash);
+        }
+        */
+
+
+
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
@@ -32,7 +42,7 @@ namespace fitapp_plodik_MVC.Controllers
                 return View();
             }
 
-            bool isValid = PasswordHelper.Verify(password, user.Password); 
+            bool isValid = PasswordHelper.Verify(password, user.Password);
 
             if (!isValid)
             {
@@ -40,23 +50,12 @@ namespace fitapp_plodik_MVC.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("UserId", user.Id.ToString());  // kontrola pro aplikaci že je uživatel přihlášen
+            HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("UserEmail", user.Email);
 
             return RedirectToAction("Index", "Home");
         }
 
-        
-
-        /*
-        public IActionResult TestHash()
-        {
-            var hash = PasswordHelper.HashPassword("marek");   // metoda pro získání hashovaného hesla 
-            return Content(hash);
-        }
-
-        */
-        
         [HttpGet]
         public IActionResult Register()
         {
@@ -65,11 +64,9 @@ namespace fitapp_plodik_MVC.Controllers
 
 
 
-
         [HttpPost]
         public IActionResult Register(string email, string password, string confirmPassword)
         {
-           
             if (password != confirmPassword)
             {
                 ViewBag.Error = "Hesla se neshodují";
@@ -83,36 +80,77 @@ namespace fitapp_plodik_MVC.Controllers
                 return View();
             }
 
-           
             var newUser = new User
             {
                 Email = email,
-                Password = PasswordHelper.HashPassword(password) 
+                Password = PasswordHelper.HashPassword(password)
             };
 
-            
             _context.Users.Add(newUser);
             _context.SaveChanges();
 
-            
             return RedirectToAction("Login");
         }
+
+
+
+
+
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            var userIdString = HttpContext.Session.GetString("UserId");
+
+            if (userIdString == null)
+                return RedirectToAction("Login");
+
+            int userId = int.Parse(userIdString);
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+                return RedirectToAction("Login");
+
+            return View(user);
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult Profile(User model)
+        {
+            var userIdString = HttpContext.Session.GetString("UserId");
+
+            if (userIdString == null)
+                return RedirectToAction("Login");
+
+            int userId = int.Parse(userIdString);
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+                return RedirectToAction("Login");
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Age = model.Age;
+
+            _context.SaveChanges();
+
+            ViewBag.Success = "Profil byl úspěšně uložen.";
+            return View(user);
+        }
+
+
+
 
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-
             Response.Cookies.Delete(".AspNetCore.Session");
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login");
         }
-
-
-
-
-
-
-
-
     }
 }
