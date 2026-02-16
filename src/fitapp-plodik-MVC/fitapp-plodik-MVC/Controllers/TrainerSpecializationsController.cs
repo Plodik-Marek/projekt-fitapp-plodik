@@ -38,8 +38,8 @@ namespace fitapp_plodik_MVC.Controllers
 
             if (exists)
             {
-                ModelState.AddModelError("", "Tato specializace už existuje.");
-                ViewBag.TrainerId = model.TrainerId;
+                ModelState.AddModelError("", "Tato specializace už existuje."); 
+                ViewBag.TrainerId = model.TrainerId;  // ViewBag umožnuje posílat data z controleru do view
                 ViewBag.ExerciseId = new SelectList(_db.Exercises.OrderBy(e => e.Name), "Id", "Name", model.ExerciseId);
                 return View(model);
             }
