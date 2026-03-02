@@ -104,16 +104,29 @@
     }
 
     <form asp-controller="Account" asp-action="Register" method="post">
-        <label class="fit-label">Email</label>
-        <input type="email" name="email" class="form-control fit-input" placeholder="zadej e-mail" required />
+        <form asp-controller="Account" asp-action="Register" method="post">
 
-        <label class="fit-label">Heslo</label>
-        <input type="password" name="password" class="form-control fit-input" placeholder="••••••••" required />
+            <label class="fit-label">Email</label>
+            <input type="email" name="email" class="form-control fit-input" required />
 
-        <label class="fit-label">Potvrdit heslo</label>
-        <input type="password" name="confirmPassword" class="form-control fit-input" placeholder="••••••••" required />
+            <label class="fit-label">Jméno</label>
+            <input type="text" name="firstName" class="form-control fit-input" required />
 
-        <button type="submit" class="btn-login"> Registrovat se </button>
+            <label class="fit-label">Příjmení</label>
+            <input type="text" name="lastName" class="form-control fit-input" required />
+
+            <label class="fit-label">Věk</label>
+            <input type="number" name="age" class="form-control fit-input" required />
+
+            <label class="fit-label">Heslo</label>
+            <input type="password" name="password" class="form-control fit-input" required />
+
+            <label class="fit-label">Potvrdit heslo</label>
+            <input type="password" name="confirmPassword" class="form-control fit-input" required />
+
+            <button type="submit" class="btn-login">VYTVOŘIT ÚČET</button>
+
+        </form>
     </form>
 
     

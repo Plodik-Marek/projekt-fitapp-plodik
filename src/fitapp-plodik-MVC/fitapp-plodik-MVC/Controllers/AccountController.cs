@@ -65,7 +65,7 @@ namespace fitapp_plodik_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult Register(string email, string password, string confirmPassword)
+        public IActionResult Register(string email, string firstName, string lastName, int age, string password, string confirmPassword)
         {
             if (password != confirmPassword)
             {
@@ -83,6 +83,9 @@ namespace fitapp_plodik_MVC.Controllers
             var newUser = new User
             {
                 Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                Age = age,
                 Password = PasswordHelper.HashPassword(password)
             };
 
@@ -91,7 +94,6 @@ namespace fitapp_plodik_MVC.Controllers
 
             return RedirectToAction("Login");
         }
-
 
 
 

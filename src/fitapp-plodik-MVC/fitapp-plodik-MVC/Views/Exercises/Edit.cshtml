@@ -12,12 +12,6 @@
         margin-bottom: 0;
     }
 
-    .fit-subtitle {
-        color: rgba(255,255,255,0.65);
-        font-family: 'Montserrat', sans-serif;
-        margin-bottom: 18px;
-    }
-
     .fit-box {
         background: rgba(18, 18, 18, 0.92);
         border: 1px solid rgba(255,255,255,0.10);
@@ -43,34 +37,14 @@
         padding: 10px 12px !important;
     }
 
-        .fit-input:focus {
-            border-color: rgba(34, 211, 238, 0.45) !important;
-            box-shadow: 0 0 0 0.15rem rgba(34, 211, 238, 0.15) !important;
-        }
-
-    select.fit-input option {
-        background: #0a0a0a;
-        color: #fff;
-    }
-
     .fit-btn-save {
         background: rgba(255, 193, 7, 0.14);
         border: 1px solid rgba(255, 193, 7, 0.35);
         color: rgba(255, 193, 7, 0.95);
         font-weight: 800;
-        letter-spacing: 0.6px;
         border-radius: 14px;
         padding: 10px 18px;
-        transition: 0.2s ease;
-        text-decoration: none;
-        display: inline-block;
     }
-
-        .fit-btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(255, 193, 7, 0.18);
-            color: rgba(255, 193, 7, 1);
-        }
 
     .fit-btn-back {
         background: rgba(255,255,255,0.08);
@@ -79,26 +53,16 @@
         font-weight: 700;
         border-radius: 14px;
         padding: 10px 18px;
-        transition: 0.2s ease;
         text-decoration: none;
-        display: inline-block;
     }
-
-        .fit-btn-back:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255,255,255,0.06);
-            color: #fff;
-        }
 </style>
 
 <div class="fit-box">
 
-    <div class="mb-3">
-        <h2 class="fit-page-title">Upravit cvik</h2>
+    <h2 class="fit-page-title">Upravit cvik</h2>
 
-    </div>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
 
-    <form asp-action="Edit" method="post">
         <input type="hidden" asp-for="Id" />
 
         <div class="mb-3">
@@ -117,8 +81,8 @@
         </div>
 
         <div class="mb-3">
-            <label class="fit-label">Obrázek URL</label>
-            <input asp-for="ImageUrl" class="form-control fit-input" />
+            <label class="fit-label">Obrázek</label>
+            <input type="file" name="imageFile" class="form-control fit-input" />
         </div>
 
         <div class="mb-4">
@@ -132,6 +96,7 @@
             <button type="submit" class="fit-btn-save">Uložit</button>
             <a asp-action="Index" class="fit-btn-back">Zpět</a>
         </div>
+
     </form>
 
 </div>

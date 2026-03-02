@@ -33,15 +33,15 @@ namespace fitapp_plodik_MVC.Controllers
             return View(exercise);
         }
 
-        public IActionResult Create() // CREATE ALE Get method (formulář)
+        public IActionResult Create()
         {
             ViewBag.MachineId = new SelectList(_db.Machines, "Id", "Name");
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // CREATE ALE Post method (zpracování formuláře)
-        public async Task<IActionResult> Create(Exercise exercise, IFormFile? imageFile)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Exercise exercise, IFormFile imageFile)
         {
             if (!ModelState.IsValid)
             {
@@ -51,27 +51,32 @@ namespace fitapp_plodik_MVC.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                string folder = Path.Combine(_env.WebRootPath, "img/uploads/exercises");
+                string folder = Path.Combine(_env.WebRootPath, "img/exercises");
                 Directory.CreateDirectory(folder);
 
-                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);  // zajímavá věc která generuje unikátní jméno souboru a uloží ho do správné složky
-                string filePath = Path.Combine(folder, fileName);
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string path = Path.Combine(folder, fileName);
 
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await imageFile.CopyToAsync(stream);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
 
-                exercise.ImageUrl = "/img/uploads/exercises/" + fileName;
+                exercise.ImageUrl = "/img/exercises/" + fileName;
             }
 
-            _db.Add(exercise);
+            _db.Exercises.Add(exercise);
             await _db.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int id)
         {
             var exercise = await _db.Exercises.FindAsync(id);
-            if (exercise == null) return NotFound();
+
+            if (exercise == null)
+                return NotFound();
 
             ViewBag.MachineId = new SelectList(_db.Machines, "Id", "Name", exercise.MachineId);
             return View(exercise);
@@ -79,12 +84,15 @@ namespace fitapp_plodik_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Exercise exercise, IFormFile? imageFile)
+        public async Task<IActionResult> Edit(int id, Exercise exercise, IFormFile imageFile)
         {
-            if (id != exercise.Id) return NotFound();
+            if (id != exercise.Id)
+                return NotFound();
 
             var existing = await _db.Exercises.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            if (existing == null) return NotFound();
+
+            if (existing == null)
+                return NotFound();
 
             if (!ModelState.IsValid)
             {
@@ -94,16 +102,18 @@ namespace fitapp_plodik_MVC.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                string folder = Path.Combine(_env.WebRootPath, "img/uploads/exercises");
+                string folder = Path.Combine(_env.WebRootPath, "img/exercises");
                 Directory.CreateDirectory(folder);
 
-                string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                string filePath = Path.Combine(folder, fileName);
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string path = Path.Combine(folder, fileName);
 
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await imageFile.CopyToAsync(stream);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
 
-                exercise.ImageUrl = "/img/uploads/exercises/" + fileName;
+                exercise.ImageUrl = "/img/exercises/" + fileName;
             }
             else
             {
@@ -112,6 +122,7 @@ namespace fitapp_plodik_MVC.Controllers
 
             _db.Update(exercise);
             await _db.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -121,19 +132,24 @@ namespace fitapp_plodik_MVC.Controllers
                 .Include(e => e.Machine)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
-            if (exercise == null) return NotFound();
+            if (exercise == null)
+                return NotFound();
+
             return View(exercise);
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken] // věc která cháání formulář před útoky 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var exercise = await _db.Exercises.FindAsync(id);
-            if (exercise == null) return NotFound();
+
+            if (exercise == null)
+                return NotFound();
 
             _db.Exercises.Remove(exercise);
             await _db.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
     }
