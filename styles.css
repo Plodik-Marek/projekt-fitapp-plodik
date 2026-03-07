@@ -1,0 +1,45 @@
+body{
+ 
+  font-family: Arial;
+}
+
+
+#grid{
+
+display: grid;
+grid-template-columns: repeat(20,30px);
+grid-template-rows: repeat(20,30px);
+gap: 2px;
+margin-top: 20px;
+
+
+}
+
+
+.cell{
+
+    width: 30px;
+    height: 30px;
+    background-color: green
+}
+
+.road{
+    background-color: gray;
+}
+
+
+.water{
+    background-color: blue;
+}
+
+.hidden{
+    display: none;
+}   
+
+
+button{
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
