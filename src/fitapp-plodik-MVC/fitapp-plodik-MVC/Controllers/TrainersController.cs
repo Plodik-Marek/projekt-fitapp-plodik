@@ -23,13 +23,22 @@ namespace fitapp_plodik_MVC.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var trainer = await _db.Trainers.FindAsync(id);
-            if (trainer == null) return NotFound();
+            var trainer = await _db.Trainers
+                .Include(t => t.TrainerSpecializations)
+                .ThenInclude(ts => ts.Exercise)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainer == null)
+                return NotFound();
+
             return View(trainer);
         }
 
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
@@ -37,6 +46,9 @@ namespace fitapp_plodik_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Trainer trainer, IFormFile? imageFile)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             if (!ModelState.IsValid) return View(trainer);
 
             if (imageFile != null && imageFile.Length > 0)
@@ -58,17 +70,25 @@ namespace fitapp_plodik_MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         public async Task<IActionResult> Edit(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var trainer = await _db.Trainers.FindAsync(id);
             if (trainer == null) return NotFound();
             return View(trainer);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Trainer trainer, IFormFile? imageFile)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             if (id != trainer.Id) return NotFound();
 
             var existingTrainer = await _db.Trainers
@@ -102,8 +122,12 @@ namespace fitapp_plodik_MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         public async Task<IActionResult> Delete(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var trainer = await _db.Trainers.FindAsync(id);
             if (trainer == null) return NotFound();
             return View(trainer);
@@ -113,6 +137,9 @@ namespace fitapp_plodik_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var trainer = await _db.Trainers.FindAsync(id);
             if (trainer == null) return NotFound();
 

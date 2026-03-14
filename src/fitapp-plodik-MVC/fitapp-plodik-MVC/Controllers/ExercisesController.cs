@@ -89,16 +89,15 @@ namespace fitapp_plodik_MVC.Controllers
             if (id != exercise.Id)
                 return NotFound();
 
-            var existing = await _db.Exercises.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var existing = await _db.Exercises.FindAsync(id);
 
             if (existing == null)
                 return NotFound();
 
-            if (!ModelState.IsValid)
-            {
-                ViewBag.MachineId = new SelectList(_db.Machines, "Id", "Name", exercise.MachineId);
-                return View(exercise);
-            }
+            existing.Name = exercise.Name;
+            existing.MuscleGroup = exercise.MuscleGroup;
+            existing.Description = exercise.Description;
+            existing.MachineId = exercise.MachineId;
 
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -113,14 +112,9 @@ namespace fitapp_plodik_MVC.Controllers
                     await imageFile.CopyToAsync(stream);
                 }
 
-                exercise.ImageUrl = "/img/exercises/" + fileName;
-            }
-            else
-            {
-                exercise.ImageUrl = existing.ImageUrl;
+                existing.ImageUrl = "/img/exercises/" + fileName;
             }
 
-            _db.Update(exercise);
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

@@ -82,7 +82,15 @@
         <div class="fit-page-title">Trenéři</div>
         <div class="fit-subtitle">Tým profesionálů</div>
     </div>
-    <a asp-action="Create" class="fit-btn-add">+ Přidat trenéra</a>
+
+    @if (Context.Session.GetString("UserRole") == "Admin")
+    {
+        <a asp-action="Create" class="fit-btn-add">+ Přidat trenéra</a>
+    }
+    else
+    {
+        <a href="#" onclick="adminOnly()" class="fit-btn-add">+ Přidat trenéra</a>
+    }
 </div>
 
 @if (Model == null || Model.Count == 0)
@@ -95,13 +103,17 @@ else
         @foreach (var t in Model)
         {
             <div class="fit-card">
+
                 @if (!string.IsNullOrEmpty(t.ImageUrl))
                 {
                     <img src="@t.ImageUrl" class="fit-avatar" />
                 }
                 else
                 {
-                    <div class="fit-avatar d-flex align-items-center justify-content-center" style="background:rgba(34,211,238,.15);font-size:2rem;">🏋️</div>
+                    <div class="fit-avatar d-flex align-items-center justify-content-center"
+                         style="background:rgba(34,211,238,.15);font-size:2rem;">
+                        🏋️
+                    </div>
                 }
 
                 <div class="fit-name">@t.FullName</div>
@@ -109,11 +121,37 @@ else
                 <div class="fit-contact">@t.Phone</div>
 
                 <div class="fit-links mt-2">
+
                     <a asp-action="Details" asp-route-id="@t.Id">Detail</a> |
-                    <a asp-action="Edit" asp-route-id="@t.Id">Upravit</a> |
-                    <a asp-action="Delete" asp-route-id="@t.Id">Smazat</a>
+
+                    @if (Context.Session.GetString("UserRole") == "Admin")
+                    {
+                        <a asp-action="Edit" asp-route-id="@t.Id">Upravit</a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="adminOnly()">Upravit</a>
+                    }
+
+                    |
+
+                    @if (Context.Session.GetString("UserRole") == "Admin")
+                    {
+                        <a asp-action="Delete" asp-route-id="@t.Id">Smazat</a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="adminOnly()">Smazat</a>
+                    }
+
                 </div>
             </div>
         }
     </div>
 }
+
+<script>
+    function adminOnly(){
+        alert("Tuto akci může provést pouze admin.");
+    }
+</script>

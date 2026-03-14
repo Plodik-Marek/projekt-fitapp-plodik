@@ -30,6 +30,9 @@ namespace fitapp_plodik_MVC.Controllers
 
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
@@ -37,6 +40,9 @@ namespace fitapp_plodik_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Machine machine, IFormFile? imageFile)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             if (!ModelState.IsValid) return View(machine);
 
             if (imageFile != null && imageFile.Length > 0)
@@ -60,6 +66,9 @@ namespace fitapp_plodik_MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var machine = await _db.Machines.FindAsync(id);
             if (machine == null) return NotFound();
             return View(machine);
@@ -69,6 +78,9 @@ namespace fitapp_plodik_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Machine machine, IFormFile? imageFile)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             if (id != machine.Id) return NotFound();
 
             var existingMachine = await _db.Machines
@@ -104,6 +116,9 @@ namespace fitapp_plodik_MVC.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var machine = await _db.Machines.FindAsync(id);
             if (machine == null) return NotFound();
             return View(machine);
@@ -113,6 +128,9 @@ namespace fitapp_plodik_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToAction("Index", "Home");
+
             var machine = await _db.Machines.FindAsync(id);
             if (machine == null) return NotFound();
 

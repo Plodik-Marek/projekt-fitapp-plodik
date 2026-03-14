@@ -52,6 +52,7 @@ namespace fitapp_plodik_MVC.Controllers
 
             HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserRole", user.Role);
 
             return RedirectToAction("Index", "Home");
         }
@@ -154,5 +155,10 @@ namespace fitapp_plodik_MVC.Controllers
 
             return RedirectToAction("Login");
         }
+
+
+
+
+       
     }
 }
